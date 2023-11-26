@@ -6,7 +6,8 @@
     <button @click="startCamera">撮影を開始する</button>
 
     <!-- カメラの映像表示 -->
-    <video v-if="showCamera" ref="videoElement" autoplay></video>
+    <!-- <video v-if="showCamera" ref="videoElement" autoplay></video> -->
+    <video v-if="showCamera" ref="videoElement"></video>
 
     <!-- 撮影ボタン -->
     <button v-if="showCaptureButton" @click="captureImage">撮影</button>
@@ -30,22 +31,43 @@ export default {
   },
   methods: {
     // カメラを開始するメソッド
-    startCamera() {
+    async startCamerA() {
       this.showCamera = true;
       const videoElement = this.$refs.videoElement as HTMLVideoElement;
 
-      // カメラのストリームを取得
-      navigator.mediaDevices
-        .getUserMedia({ video: true })
-        .then((stream) => {
-          videoElement.srcObject = stream;
-          if (videoElement.srcObject !== null) {
-            this.showCaptureButton = true;
-          }
-        })
-        .catch((error) => {
-          console.error("Error accessing camera:", error);
+      try {
+        // カメラのストリームを取得
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
         });
+        videoElement.srcObject = stream;
+        if (videoElement.srcObject !== null) {
+          this.showCaptureButton = true;
+        }
+      } catch (error) {
+        console.error("Error accessing camera:", error);
+      }
+    },
+
+    async startCamera() {
+      this.showCamera = true;
+
+      // $nextTickメソッドを使用してDOMが更新された後に処理を行う
+      this.$nextTick(async () => {
+        const videoElement = this.$refs.videoElement as HTMLVideoElement;
+
+        try {
+          // カメラのストリームを取得
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+          });
+          videoElement.srcObject = stream;
+          videoElement.play(); // 手動で再生を開始
+          this.showCaptureButton = true;
+        } catch (error) {
+          console.error("Error accessing camera:", error);
+        }
+      });
     },
 
     // 画像を撮影するメソッド

@@ -5,11 +5,12 @@
     <!-- 生成するボタン -->
     <button @click="startAR">生成する</button>
 
+    <!-- ARの映像表示 -->
+    <!-- <div v-if="showAR" class="ar-object" ref="arObject"></div> -->
+    <div v-if="showAR" ref="arObject"></div>
+
     <!-- 設置するボタン -->
     <button v-if="showPlaceButton" @click="placeRocket">設置する</button>
-
-    <!-- ARの映像表示 -->
-    <div v-if="showAR" class="ar-object" ref="arObject"></div>
   </div>
 </template>
 
@@ -43,22 +44,14 @@ export default defineComponent({
       arObject.appendChild(renderer.domElement);
 
       const geometry = new THREE.BoxGeometry();
-      // const geometry = new THREE.OctahedronGeometry();
       const material = new THREE.MeshBasicMaterial();
       const cube = new THREE.Mesh(geometry, material);
       scene.add(cube);
 
-      // const geometry2 = new THREE.OctahedronGeometry();
-      // const material2 = new THREE.MeshBasicMaterial();
-      // const cube2 = new THREE.Mesh(geometry, material);
-      // scene.add(cube2);
-
       camera.position.z = 5;
 
-      // 以下の二つは消してもいいかも
+      // 以下は消してもいいかも
       cube.position.x -= 1;
-      // cube2.position.x -= 1;
-      // cube.position.y -= 1;
 
       const animate = () => {
         requestAnimationFrame(animate);
@@ -66,8 +59,6 @@ export default defineComponent({
         // ARオブジェクトのアニメーション
         cube.rotation.x += 0.01;
         cube.rotation.y += 0.01;
-        // cube2.rotation.x += 0.01;
-        // cube2.rotation.y += 0.01;
 
         // 色を虹色に変化させる
         const time = performance.now() * 0.001;
@@ -75,8 +66,6 @@ export default defineComponent({
 
         cube.position.x += Math.sin(cube.rotation.y) * 0.01;
         cube.position.y += Math.cos(cube.rotation.x) * 0.01;
-        // cube2.position.x += Math.sin(cube.rotation.y - Math.PI / 2) * 0.01;
-        // cube2.position.y += Math.cos(cube.rotation.x - Math.PI / 2) * 0.01;
 
         renderer.render(scene, camera);
       };
