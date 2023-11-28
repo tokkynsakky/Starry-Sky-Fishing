@@ -1,17 +1,17 @@
 <template>
   <div class="viewTitle">
-    <!-- <h1>ロケットを生成🚀</h1> -->
-    <ChangeScene></ChangeScene>
+    <h1>ロケットを生成🚀</h1>
+    <!-- <ChangeScene></ChangeScene> -->
 
     <!-- 生成するボタン -->
-    <!-- <button @click="startAR">生成する</button> -->
+    <button @click="startAR">生成する</button>
 
     <!-- ARの映像表示 -->
-    <!-- <div v-if="showAR" class="ar-object" ref="arObject"></div> -->
+    <div v-if="showAR" class="ar-object" ref="arObject"></div>
     <!-- <div v-if="showAR" ref="arObject"></div> -->
 
     <!-- 設置するボタン -->
-    <!-- <button v-if="showPlaceButton" @click="placeRocket">設置する</button> -->
+    <button v-if="showPlaceButton" @click="placeRocket">設置する</button>
   </div>
 </template>
 
