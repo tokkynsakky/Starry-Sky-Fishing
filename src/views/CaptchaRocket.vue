@@ -1,18 +1,9 @@
 <template>
   <div class="viewTitle">
     <h1>ロケットを選ぼう🚀</h1>
-
-    <!-- 撮影を開始するボタン -->
     <button @click="startCamera">撮影を開始する</button>
-
-    <!-- カメラの映像表示 -->
-    <!-- <video v-if="showCamera" ref="videoElement" autoplay></video> -->
-    <video v-if="showCamera" ref="videoElement"></video>
-
-    <!-- 撮影ボタン -->
+    <video v-if="showCamera" ref="videoElement" autoplay></video>
     <button v-if="showCaptureButton" @click="captureImage">撮影</button>
-
-    <!-- ロケット作成へボタン -->
     <button v-if="showCreateRocketButton" @click="createRocket">
       ロケット作成へ
     </button>
@@ -20,6 +11,9 @@
 </template>
 
 <script lang="ts">
+import * as cocoSsd from "@tensorflow-models/coco-ssd";
+import "@tensorflow/tfjs";
+
 export default {
   data() {
     return {
@@ -30,25 +24,6 @@ export default {
     };
   },
   methods: {
-    // カメラを開始するメソッド
-    async startCamerA() {
-      this.showCamera = true;
-      const videoElement = this.$refs.videoElement as HTMLVideoElement;
-
-      try {
-        // カメラのストリームを取得
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-        });
-        videoElement.srcObject = stream;
-        if (videoElement.srcObject !== null) {
-          this.showCaptureButton = true;
-        }
-      } catch (error) {
-        console.error("Error accessing camera:", error);
-      }
-    },
-
     async startCamera() {
       this.showCamera = true;
 
@@ -70,16 +45,15 @@ export default {
       });
     },
 
-    // 画像を撮影するメソッド
-    captureImage() {
-      // ここに画像のキャプチャロジックを追加
-      this.showCaptureButton = true;
+    async captureImage() {
+      const videoElement = this.$refs.videoElement as HTMLVideoElement;
+      // ここでpredictionsを使用して3Dモデルを生成するロジックを追加
+
+      this.showCaptureButton = false;
       this.showCreateRocketButton = true;
     },
 
-    // ロケットを作成するメソッド
     createRocket() {
-      // ここにロケット作成のロジックを追加
       this.$router.push("/main/generaterocket");
     },
   },
